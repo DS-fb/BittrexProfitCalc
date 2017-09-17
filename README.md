@@ -47,9 +47,9 @@ It doesn't currently support the USDT market.
 This was written by me! Davion!
 As you can see by the output, Day Trader I am Not! :D So any tips are greatly appreciated!
 
- ETH: 0xB5aa1F5736a87Fd06e0B139Bf11870e1C13e5018
- BTC: 15g4fnWKQPJPV7K59gBv4BWvW6X4caHbLp
- XMR: 46HrHXy5fBoW8NuJ5zMEARi1wdcKDKFqJF8f7RZfHavjF64JwxXdaFF9V7zjFkrVwMMMabTopVs42h19Q9EfFRfPJehYmHW
- NEO: AJC9fqgHdrt4gbvr5VUaYPdaeVsXsnstbE
+    ETH: 0xB5aa1F5736a87Fd06e0B139Bf11870e1C13e5018
+    BTC: 15g4fnWKQPJPV7K59gBv4BWvW6X4caHbLp
+    XMR: 46HrHXy5fBoW8NuJ5zMEARi1wdcKDKFqJF8f7RZfHavjF64JwxXdaFF9V7zjFkrVwMMMabTopVs42h19Q9EfFRfPJehYmHW
+    NEO: AJC9fqgHdrt4gbvr5VUaYPdaeVsXsnstbE
 
 Thanks in advance!!
