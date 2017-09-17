@@ -14,7 +14,7 @@ Run the script from command line.
 
 # Output
 
-  Bittrex Profit Calculator
+    Bittrex Profit Calculator
     You've done 39 trades with 15 stocks since 09/05/2017 03:58:50 PM.
     
         (3)BTC-EDG       Hodling: 50.91083078     Profit: 0.002553
