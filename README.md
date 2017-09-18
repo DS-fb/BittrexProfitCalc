@@ -9,6 +9,7 @@ From there, open command line and install pandas "pip install pandas"
 Download a cvs copy of your trades from Bittrex at  https://bittrex.com/History
 Click the 'CVS' button under the 'COMPLETED' Section.
 Move that file to the location the script is located and rename it to 'bittrex.cvs'
+Using -z option will remove all the wallets holding 0 coins.
 
 Run the script from command line.
 

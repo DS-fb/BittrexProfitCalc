@@ -6,8 +6,9 @@
 ##      Download your current trade list from Bittrex. So head to https://bittrex.com/History
 ##      and click the CSV button in the 'COMPLETED' section of Bittrex.
 ##      Copy the .csv file to the same directory as this script and rename it to bittrex.csv
-##      Run the script from command line. Example:
-##
+##      Run the script from command line. adding -z to the end will hide wallets without any coins in them.
+##Example:
+##  C:\Users\Davion\bittrexprofitcalc.py
 ##  Bittrex Profit Calculator
 ##    You've done 39 trades with 15 stocks since 09/05/2017 03:58:50 PM.
 ##    
@@ -35,7 +36,7 @@
 ## Current Limiations:
 ## If you cross trade markets (Ie. buy ETH/OMG then sell it on BTC/OMG it'll report incorrect numbers).
 ## No market for USDT
-
+import getopt, sys
 import pandas as pd
 from string import ascii_lowercase as abc
 
@@ -93,62 +94,79 @@ class Stock:
             profit += i[3]
         
         return profit
+
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv,"z",["hide-zero"])
+    except getopt.GetoptError:
+        print('bittrexprofitcalc.py -z')
+    hide_zeros = False
+    for opt, arg in opts:
+        if opt == '-z':
+            hide_zeros = True
+    # Load csv
+    df = pd.read_csv("bittrex.csv") 
+
+    stocks = {}
+
+    for i in df['Market']:
+        if i not in stocks:
+            stocks[i] = Stock(i)
             
-# Load csv
-df = pd.read_csv("bittrex.csv") 
+    print("Bittrex Profit Calculator\n")
+    print("You've done %d trades with %d stocks since %s.\n" % (len(df[type]), len(stocks), df[close][len(df[close])-1]))
+        
+    spent = {'BTC':0.00000000, 'ETH':0.00000000}
+    wallet = {'BTC':0.00000000, 'ETH':0.00000000}
 
-stocks = {}
-
-for i in df['Market']:
-	if i not in stocks:
-		stocks[i] = Stock(i)
-		
-print("Bittrex Profit Calculator\n")
-print("You've done %d trades with %d stocks since %s.\n" % (len(df[type]), len(stocks), df[close][len(df[close])-1]))
-	
-spent = {'BTC':0.00000000, 'ETH':0.00000000}
-wallet = {'BTC':0.00000000, 'ETH':0.00000000}
-
-for i in reversed(range(0, len(df[type]))):
-    market = df[coin][i][:3]
-    price = df[cost][i]
-    perunit = df[rate][i]
-    if price < 0.0000000:
-        #Buy
-        if wallet[market] < abs(price):
-            #Didn't have enough money so it's a loadup from outside.
-            spent[market] += abs(price)
+    for i in reversed(range(0, len(df[type]))):
+        market = df[coin][i][:3]
+        price = df[cost][i]
+        perunit = df[rate][i]
+        if price < 0.0000000:
+            #Buy
+            if wallet[market] < abs(price):
+                #Didn't have enough money so it's a loadup from outside.
+                spent[market] += abs(price)
+            else:
+                #Had enough money so it's a buy. Price is negative for buys so you can add it.
+                wallet[market] += price
+            if market == 'ETH':
+                if stocks['BTC-ETH'].total > abs(price):
+                    stocks['BTC-ETH'].total += price
+            stocks[df[coin][i]].total += df[units][i]
+            stocks[df[coin][i]].buy(df[units][i], perunit)
         else:
-            #had enough money so it's a buy.
+            #Sell
+            stocks[df[coin][i]].sell(df[units][i], perunit)
+            stocks[df[coin][i]].total -= df[units][i]
             wallet[market] += price
-        stocks[df[coin][i]].total += df[units][i]
-        stocks[df[coin][i]].buy(df[units][i], perunit)
-    else:
-        #Sell
-        stocks[df[coin][i]].sell(df[units][i], perunit)
-        stocks[df[coin][i]].total -= df[units][i]
-        wallet[market] += price
-        #Check previous buy to see if this is profitable.
-       
-profit = {'BTC':0.00000000, 'ETH':0.00000000}
-high = None
-low = None
-for k, stock in stocks.items():
-    market = stock.name[:3]
-    profit[market] += stock.profit()
-    if not high:
-        high = stock
-    else:
-        if high.profit() < stock.profit():
+            #Check previous buy to see if this is profitable.
+           
+    profit = {'BTC':0.00000000, 'ETH':0.00000000}
+    high = None
+    low = None
+    for k, stock in stocks.items():
+        market = stock.name[:3]
+        profit[market] += stock.profit()
+        if not high:
             high = stock
-    if not low:
-        low = stock
-    else:
-        if low.profit() > stock.profit():
-            low = stock        
-    
-    print("\t(%d)%-10s    Hodling: %-15.8f Profit: %f" % (len(stock.purchases), k, stock.total, stock.profit()))
+        else:
+            if high.profit() < stock.profit():
+                high = stock
+        if not low:
+            low = stock
+        else:
+            if low.profit() > stock.profit():
+                low = stock        
+        if stock.total == 0 and hide_zeros:
+            continue
+        
+        print("\t(%d)%-10s    Hodling: %-15.8f Profit: %f" % (len(stock.purchases), k, stock.total, stock.profit()))
 
-print("\nYou've made %fBTC, and %fETH." % (profit['BTC'], profit['ETH']) )
-print("You made the most off %s. You made the least of %s.\n" %( high.name, low.name))
-print("You have deposited into Bittrex, %fBTC and %fETH." % (spent['BTC'], spent['ETH']))
+    print("\nYou've made %fBTC, and %fETH." % (profit['BTC'], profit['ETH']) )
+    print("You made the most off %s. You made the least of %s.\n" %( high.name, low.name))
+    print("You have deposited into Bittrex, %fBTC and %fETH." % (spent['BTC'], spent['ETH']))
+    
+if __name__ == "__main__":
+   main(sys.argv[1:])    
