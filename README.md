@@ -16,7 +16,7 @@ Run the script from command line.
 # Output
 
     You've done 68 trades with 18 stocks since 09/05/2017 03:58:50 PM.
-    
+     Coin             Holdings        Profit       Average Price Per Coin      
     BTC-RISE        234.53810889    0.00733561      0.000129 on 9 trades.
     BTC-VTC         0.00000000      0.00010683      0.000352 on 1 trades.
     BTC-OK          0.00000000      -0.00299157     0.000116 on 2 trades.
