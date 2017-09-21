@@ -37,6 +37,7 @@
 ## If you cross trade markets (Ie. buy ETH/OMG then sell it on BTC/OMG it'll report incorrect numbers).
 ## No market for USDT
 import getopt, sys
+from os import system
 import pandas as pd
 from string import ascii_lowercase as abc
 
@@ -53,12 +54,19 @@ class Stock:
         self.name = name
         self.total = 0.00000000
         self.purchases = []
+        self.ave_price = 0.00000000
     def __str__(self):
         return "%s: %f | %s\n" % (self.name, self.total, self.purchases)
 
     def buy(self, amount, price):
         # add a purchase with the amount, price, and remaining.
         self.purchases.append( [amount, price, amount, 0.00000] )
+        tprice = 0.0
+        tcount = 0.0
+        for i in self.purchases:
+            tprice += i[1] * i[2]
+            tcount += i[2]
+        self.ave_price = tprice / tcount
             
     def sell(self, amount, price):
         fulfilled = 0.0
@@ -146,6 +154,8 @@ def main(argv):
     profit = {'BTC':0.00000000, 'ETH':0.00000000}
     high = None
     low = None
+    print("    %-15s  %-14s  %-12s %s\n" % ("Coin", "Holdings", "Profit", "Average Price Per Coin"))
+    i = 0
     for k, stock in stocks.items():
         market = stock.name[:3]
         profit[market] += stock.profit()
@@ -161,8 +171,8 @@ def main(argv):
                 low = stock        
         if stock.total == 0 and hide_zeros:
             continue
-        
-        print("\t(%d)%-10s    Hodling: %-15.8f Profit: %f" % (len(stock.purchases), k, stock.total, stock.profit()))
+
+        print("   %-15s %-15.8f %-15.8f %f on %d trades." % (k, stock.total, stock.profit(), stock.ave_price, (len(stock.purchases))))
 
     print("\nYou've made %fBTC, and %fETH." % (profit['BTC'], profit['ETH']) )
     print("You made the most off %s. You made the least of %s.\n" %( high.name, low.name))
