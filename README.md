@@ -36,9 +36,9 @@ Run the script from command line.
     BTC-STRAT       0.00000000      0.00001471      0.001379 on 1 trades.
     BTC-DCR         -0.19546350     0.00000000      0.000000 on 0 trades.
     
-   You've made 0.009532BTC, and 0.000000ETH.
-   You made the most off BTC-RISE. You made the least of BTC-OK.
-   You have deposited into Bittrex, 0.200385BTC and 0.499998ETH. 
+    You've made 0.009532BTC, and 0.000000ETH.
+    You made the most off BTC-RISE. You made the least of BTC-OK.
+    You have deposited into Bittrex, 0.200385BTC and 0.499998ETH. 
     
 # Limitaions
 If you do any cross market trading (ie. you buy ETH/OMG and then sell it on BTC/OMG) it will report incorrect numbers.
