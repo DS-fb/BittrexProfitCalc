@@ -6,9 +6,9 @@ A simple python program to calculate the profit/loss you've done directly with B
 You need to install the python interpreter from https://www.python.org/downloads/
 From there, open command line and install pandas "pip install pandas"
 
-Download a cvs copy of your trades from Bittrex at  https://bittrex.com/History
-Click the 'CVS' button under the 'COMPLETED' Section.
-Move that file to the location the script is located and rename it to 'bittrex.cvs'
+Download a csv copy of your trades from Bittrex at  https://bittrex.com/History
+Click the 'CSV' button under the 'COMPLETED' Section.
+Move that file to the location the script is located and rename it to 'bittrex.csv'
 Using -z option will remove all the wallets holding 0 coins.
 
 Run the script from command line.
@@ -42,7 +42,7 @@ Run the script from command line.
     
 # Limitaions
 If you do any cross market trading (ie. you buy ETH/OMG and then sell it on BTC/OMG) it will report incorrect numbers.
-I would suggest editing the CVS via excel or something and converting the ETH price to BTC, and the Type from 'ETH/' to 'BTC/' and you will get accurate numbers.
+I would suggest editing the CSV via excel or something and converting the ETH price to BTC, and the Type from 'ETH/' to 'BTC/' and you will get accurate numbers.
 It doesn't currently support the USDT market.
 
 # Credit
